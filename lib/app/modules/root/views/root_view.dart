@@ -7,15 +7,10 @@ import '../controllers/root_controller.dart';
 class RootView extends GetView<RootController> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('RootView'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text(
-          'RootView is working',
-          style: TextStyle(fontSize: 20),
+    return GetBuilder<RootController>(
+      builder: (_) => const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );

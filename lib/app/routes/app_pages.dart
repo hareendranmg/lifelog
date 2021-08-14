@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 
-import 'package:lifelog/app/modules/home/bindings/home_binding.dart';
-import 'package:lifelog/app/modules/home/views/home_view.dart';
-import 'package:lifelog/app/modules/login/bindings/login_binding.dart';
-import 'package:lifelog/app/modules/login/views/login_view.dart';
-import 'package:lifelog/app/modules/root/bindings/root_binding.dart';
-import 'package:lifelog/app/modules/root/views/root_view.dart';
+import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/views/home_view.dart';
+import '../modules/login/bindings/login_binding.dart';
+import '../modules/login/views/login_view.dart';
+import '../modules/root/bindings/root_binding.dart';
+import '../modules/root/views/root_view.dart';
 
 part 'app_routes.dart';
 
