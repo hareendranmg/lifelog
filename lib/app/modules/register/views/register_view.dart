@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
-import 'package:lifelog/app/routes/app_pages.dart';
 
-import '../controllers/login_controller.dart';
+import '../controllers/register_controller.dart';
 
-class LoginView extends GetView<LoginController> {
+class RegisterView extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,23 +43,12 @@ class LoginView extends GetView<LoginController> {
               ]),
             ),
             const SizedBox(height: 26),
-            GetBuilder<LoginController>(
+            GetBuilder<RegisterController>(
               builder: (_) => ElevatedButton(
-                onPressed: _.isLogging ? null : () => controller.login(),
-                child: const Text('Login'),
+                onPressed: _.isRegistering ? null : () => controller.register(),
+                child: const Text('Register'),
               ),
             ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Not Registered?'),
-                TextButton(
-                  onPressed: () => Get.toNamed(Routes.REGISTER),
-                  child: const Text('Register Here.'),
-                )
-              ],
-            )
           ],
         ),
       ),
