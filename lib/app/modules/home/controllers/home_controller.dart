@@ -1,3 +1,7 @@
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {}
+import '../../../utils/constants.dart';
+
+class HomeController extends GetxController {
+  final user = supabase.auth.currentUser!;
+}

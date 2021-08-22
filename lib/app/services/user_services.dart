@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:lifelog/app/data/user.dart';
+
+import '../data/user.dart';
 
 class UserServices extends GetxService {
   final box = GetStorage();
