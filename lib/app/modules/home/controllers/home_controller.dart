@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '../../../utils/constants.dart';
+import '../../../services/user_services.dart';
 
 class HomeController extends GetxController {
-  final user = supabase.auth.currentUser!;
+  final appUser = Get.find<UserService>().appUser!;
 }

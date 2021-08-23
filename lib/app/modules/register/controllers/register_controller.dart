@@ -3,45 +3,45 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
-import '../../../utils/constants.dart';
+import '../../../services/auth_services.dart';
+import '../../../utils/global_widgets.dart';
 
 class RegisterController extends GetxController {
   final formKey = GlobalKey<FormBuilderState>();
 
   bool _isRegistering = false;
+  bool _isObsecure = true;
 
   Future<void> register() async {
     try {
       if (formKey.currentState!.saveAndValidate()) {
         isRegistering = true;
-        final result = await supabase.auth.signUp(
-          formKey.currentState!.value['email']! as String,
-          formKey.currentState!.value['password']! as String,
-        );
+        final registerRes =
+            await AuthServices.register(formData: formKey.currentState!.value);
         isRegistering = false;
-        if (result.data != null) {
+        if (registerRes['status'] as bool) {
           Get.offAllNamed(Routes.LOGIN);
-          Get.showSnackbar(GetBar(
-            title: 'Success',
+          showSnackBar(
+            type: SnackbarType.success,
             message: 'Registration success. Please login to use the app',
-          ));
-        } else if (result.error?.message != null) {
-          Get.showSnackbar(GetBar(
-            title: 'Error',
-            message: result.error?.message,
-            backgroundColor: Colors.red[400]!,
-          ));
+          );
+        } else {
+          showSnackBar(
+            type: SnackbarType.error,
+            message: registerRes['message'] as String,
+          );
         }
       }
     } catch (e) {
-      Get.showSnackbar(GetBar(
-        title: 'Error',
-        message: 'Error occured. Please try again later',
-        backgroundColor: Colors.red[400]!,
-      ));
+      showSnackBar(
+        type: SnackbarType.error,
+        message: 'Error occured. Please try again later.',
+      );
     }
   }
 
   bool get isRegistering => _isRegistering;
   set isRegistering(bool v) => {_isRegistering = v, update()};
+  bool get isObsecure => _isObsecure;
+  set isObsecure(bool v) => {_isObsecure = v, update()};
 }

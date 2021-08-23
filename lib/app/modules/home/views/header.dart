@@ -25,7 +25,7 @@ class Header extends StatelessWidget {
               style: TextStyle(fontSize: 16.sp),
             ),
             Text(
-              controller.user.email!,
+              controller.appUser.name!,
               style: TextStyle(fontSize: 24.sp),
             ),
           ],

@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
+import '../../../utils/theme_data.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -14,7 +15,7 @@ class LoginView extends GetView<LoginController> {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            SizedBox(height: Get.height * 0.3),
+            SizedBox(height: Get.height * 0.4),
             const Text(
               'LifeLog',
               textAlign: TextAlign.center,
@@ -28,26 +29,51 @@ class LoginView extends GetView<LoginController> {
                 hintText: 'Email',
               ),
               validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(context),
-                FormBuilderValidators.email(context),
+                FormBuilderValidators.required(
+                  context,
+                  errorText: 'Please enter your registered email',
+                ),
+                FormBuilderValidators.email(
+                  context,
+                  errorText: 'Please enter your registered email',
+                ),
               ]),
             ),
             const SizedBox(height: 20),
-            FormBuilderTextField(
-              name: 'password',
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Password',
+            GetBuilder<LoginController>(
+              builder: (_) => FormBuilderTextField(
+                name: 'password',
+                obscureText: _.isObsecure,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'Password',
+                  suffixIcon: IconButton(
+                    onPressed: () => _.isObsecure = !_.isObsecure,
+                    icon: Icon(
+                      _.isObsecure ? Icons.visibility : Icons.visibility_off,
+                    ),
+                  ),
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(
+                    context,
+                    errorText: 'Please enter your password',
+                  ),
+                ]),
               ),
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(context),
-              ]),
             ),
             const SizedBox(height: 26),
             GetBuilder<LoginController>(
               builder: (_) => ElevatedButton(
                 onPressed: _.isLogging ? null : () => controller.login(),
-                child: const Text('Login'),
+                style: primaryButtonStyle,
+                child: _.isLogging
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(),
+                      )
+                    : const Text('Login'),
               ),
             ),
             const SizedBox(height: 10),

@@ -1,50 +1,44 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../data/user.dart';
+import '../data/app_user.dart';
+import '../utils/constants.dart';
 
-class UserServices extends GetxService {
+class UserService extends GetxService {
   final box = GetStorage();
+  AppUser? appUser;
 
-  User? _user;
-
-  @override
-  void onInit() {
-    user = getUser();
-    super.onInit();
+  Future<UserService> init() async {
+    if (box.hasData('user_session')) {
+      await supabase.auth.recoverSession(box.read('user_session') as String);
+      await supabase.auth.refreshSession();
+      if (supabase.auth.currentUser != null) {
+        final jsonUser = await box.read('app_user');
+        appUser = jsonUser != null
+            ? AppUser.fromJson(jsonUser as Map<String, dynamic>)
+            : null;
+      } else {
+        appUser = null;
+      }
+    }
+    return this;
   }
 
-  User? getUser() {
-    // final jsonUser = box.read('user');
-    // if (jsonUser != null) {
-    //   user = User.fromJson(jsonUser as Map<String, dynamic>);
-    // } else {
-    //   user = null;
-    // }
-    return user;
+  Future<void> saveAppUser() async {
+    final jsonUser = await supabase
+        .from('profiles')
+        .select()
+        .eq('id', supabase.auth.currentUser!.id)
+        .execute();
+    final savableUser =
+        AppUser.fromJson(jsonUser.data[0] as Map<String, dynamic>);
+    await box.write('app_user', savableUser.toJson());
+    appUser = savableUser;
   }
 
-  // Future<void> getUserFromServer() async {
-  //   final apiResponse = await apiHelper.getData(ApiUrls.getEmployeeUrl);
-  //   if (apiResponse['success'] as bool) {
-  //     final User updatedEmployee =
-  //         User.fromJson(apiResponse['data'] as Map<String, dynamic>);
-  //     updatedEmployee.token = user!.token;
-  //     await box.write('user', updatedEmployee.toJson());
-  //     _user = updatedEmployee;
-  //   }
-  // }
-
-  Future<void> saveUser(User usr) async {
-    // await box.write('user', usr.toJson());
-    user = usr;
+  Future<void> removeAppUser() async {
+    await box.remove('user_session');
+    await box.remove('app_user');
+    appUser = null;
   }
-
-  Future<void> removeUser() async {
-    await box.remove('user');
-    user = null;
-  }
-
-  User? get user => _user;
-  set user(User? user) => {_user = user};
 }
