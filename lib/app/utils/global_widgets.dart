@@ -41,10 +41,10 @@ void showSnackBar({
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold({
     Key? key,
-    required this.child,
+    required this.body,
   }) : super(key: key);
 
-  final Widget child;
+  final Widget body;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class CustomScaffold extends StatelessWidget {
       body: SafeArea(
         child: GestureDetector(
           onTap: () => removeCurrentFocus(context),
-          child: child,
+          child: body,
         ),
       ),
     );

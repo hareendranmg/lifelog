@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/global_widgets.dart';
 import '../controllers/profile_controller.dart';
+import 'widgets/profile_appbar.dart';
+import 'widgets/profile_card.dart';
 
 class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(),
+    return CustomScaffold(
+      body: ListView(
+        padding: const EdgeInsets.all(12),
+        children: [
+          const ProfileAppBar(),
+          ProfileCard(controller: controller),
+        ],
+      ),
     );
   }
 }

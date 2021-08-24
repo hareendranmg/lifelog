@@ -13,6 +13,8 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
   get: ^4.3.8
   get_storage: ^2.0.3
+  image_cropper: ^1.4.1
+  image_picker: ^0.8.3+3
   intl: ^0.17.0
   modal_progress_hud_nsn: ^0.1.0-nullsafety-1
   supabase_flutter: ^0.2.1

@@ -10,7 +10,7 @@ class RegisterView extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      child: FormBuilder(
+      body: FormBuilder(
         key: controller.formKey,
         child: ListView(
           padding: const EdgeInsets.all(20),
