@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lifelog/app/utils/constants.dart';
+import 'package:lifelog/app/utils/global_widgets.dart';
 
 import '../../../../utils/asset_urls.dart';
 import '../../controllers/profile_controller.dart';
@@ -39,9 +39,10 @@ class ProfileCard extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 40.w,
-                backgroundImage: controller.appUser.avatarUrl == null
+                backgroundImage: controller.userService.appUser!.avatarUrl ==
+                        null
                     ? const AssetImage(AssetUrls.USER)
-                    : NetworkImage(controller.appUser.avatarUrl!)
+                    : NetworkImage(controller.userService.appUser!.avatarUrl!)
                         as ImageProvider,
                 child: Align(
                   alignment: Alignment.bottomRight,
@@ -69,18 +70,39 @@ class ProfileCard extends StatelessWidget {
                                       final pickedImage = await controller
                                           .imagePicker
                                           .pickImage(
-                                              source: ImageSource.camera);
-                                      controller.image = pickedImage != null
-                                          ? XFile(pickedImage.path)
-                                          : null;
-
-                                      final File? croppedFile =
-                                          await ImageCropper.cropImage(
-                                        sourcePath: controller.image!.path,
-                                        aspectRatioPresets: [
-                                          CropAspectRatioPreset.square
-                                        ],
+                                        source: ImageSource.camera,
                                       );
+
+                                      if (pickedImage != null) {
+                                        final croppedFile =
+                                            await ImageCropper.cropImage(
+                                          sourcePath: pickedImage.path,
+                                          aspectRatioPresets: [
+                                            CropAspectRatioPreset.square
+                                          ],
+                                        );
+
+                                        if (croppedFile != null) {
+                                          final res = await controller
+                                              .userService
+                                              .updateProfilePicture(
+                                                  croppedFile);
+
+                                          Get.back();
+                                          if (res['status'] as bool) {
+                                            showSnackBar(
+                                              type: SnackbarType.success,
+                                              message:
+                                                  'Profile photo updated successfully',
+                                            );
+                                          } else {
+                                            showSnackBar(
+                                              type: SnackbarType.error,
+                                              message: res['error'] as String,
+                                            );
+                                          }
+                                        }
+                                      }
                                     },
                                     child: SizedBox(
                                       height: 120.h,
@@ -141,7 +163,7 @@ class ProfileCard extends StatelessWidget {
             ),
             SizedBox(height: 10.h),
             Text(
-              controller.appUser.name!,
+              controller.userService.appUser!.name!,
               style: TextStyle(fontSize: 18.sp),
             ),
             SizedBox(height: 12.h),
@@ -153,7 +175,7 @@ class ProfileCard extends StatelessWidget {
                     Icon(Icons.phone_android, size: 16.sp),
                     SizedBox(width: 5.w),
                     Text(
-                      '${controller.appUser.mobileNumber!}',
+                      '${controller.userService.appUser!.mobileNumber!}',
                       style: TextStyle(fontSize: 14.sp),
                     ),
                   ],
@@ -163,7 +185,7 @@ class ProfileCard extends StatelessWidget {
                     Icon(Icons.mail_outline_rounded, size: 16.sp),
                     SizedBox(width: 5.w),
                     Text(
-                      controller.appUser.email!,
+                      controller.userService.appUser!.email!,
                       style: TextStyle(fontSize: 14.sp),
                     ),
                   ],
@@ -176,10 +198,13 @@ class ProfileCard extends StatelessWidget {
           right: 10,
           top: 10,
           child: OutlinedButton.icon(
-            onPressed: () => showModalBottomSheet(
-              context: context,
-              builder: (context) => Container(),
-            ),
+            onPressed: () async {
+              final alreadyExist = await supabase.storage
+                  .from('avatars')
+                  .remove(['96c91284-dd5d-4d55-902e-2a543ad5dfdc.jpg']);
+              print(alreadyExist.error?.error);
+              print(alreadyExist.error?.message);
+            },
             icon: const Icon(Icons.edit),
             label: const Text('Edit'),
             style: OutlinedButton.styleFrom(shape: const StadiumBorder()),

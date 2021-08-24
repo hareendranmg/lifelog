@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../services/user_services.dart';
 
 class ProfileController extends GetxController {
-  final appUser = Get.find<UserService>().appUser!;
+  final userService = Get.find<UserService>();
 
   final imagePicker = ImagePicker();
   XFile? image;
