@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,16 +44,33 @@ class ProfileController extends ProfileBaseController {
 
   Future<void> removeProfilePicture() async {
     try {
-      isUpdatingProPic = true;
-      await userService.removeProfilePicture();
-      await CachedNetworkImage.evictFromCache(userService.appUser!.avatarUrl!);
-      isUpdatingProPic = false;
+      if (userService.appUser?.avatarUrl == null) return;
+      showDialog(
+        context: Get.context!,
+        builder: (context) => AlertDialog(
+          content: const Text('Are you sure to remove profile picture?'),
+          actions: [
+            TextButton(
+                onPressed: () => Get.back(), child: const Text('Cancel')),
+            ElevatedButton(
+              onPressed: () async {
+                Get.back();
+                Get.back();
+                isUpdatingProPic = true;
+                await CachedNetworkImage.evictFromCache(
+                    userService.appUser!.avatarUrl!);
+                await userService.removeProfilePicture();
+                isUpdatingProPic = false;
 
-      Get.back();
-
-      showSnackBar(
-        type: SnackbarType.success,
-        message: 'Profile photo updated successfully',
+                showSnackBar(
+                  type: SnackbarType.success,
+                  message: 'Profile photo removed successfully',
+                );
+              },
+              child: const Text('Remove'),
+            ),
+          ],
+        ),
       );
     } catch (e) {
       showSnackBar(
