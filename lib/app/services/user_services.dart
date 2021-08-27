@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-// ignore: implementation_imports
-import 'package:storage_client/src/types.dart';
 
 import '../data/app_user.dart';
 import '../utils/constants.dart';
@@ -40,38 +38,36 @@ class UserService extends GetxService {
     appUser = savableUser;
   }
 
-  Future<Map<String, dynamic>> updateProfilePicture(File imageFile) async {
-    // TODO: Check whether the image is already present or not,
-    // TODO: one method is checking avatar_url in profile page is empty or not
-    await supabase.storage
-        .from('avatars')
-        .move('${appUser!.id}.jpg', '${appUser!.id}-copy.jpg');
-    await supabase.storage.from('avatars').remove(['${appUser!.id}.jpg']);
-    final storageResponse = await supabase.storage.from('avatars').upload(
-          '${appUser!.id}.jpg',
-          imageFile,
-          fileOptions: const FileOptions(upsert: true),
-        );
+  Future<bool> updateProfilePicture(File imageFile) async {
+    // ignore: prefer_typing_uninitialized_variables
+    var storageResponse;
+    if (appUser?.avatarUrl != null) {
+      storageResponse = await supabase.storage
+          .from('avatars')
+          .update('${appUser!.id}.jpg', imageFile);
+    } else {
+      storageResponse = await supabase.storage
+          .from('avatars')
+          .upload('${appUser!.id}.jpg', imageFile);
+    }
+
     if (storageResponse.data != null) {
-      final publicUrl = supabase.storage
-          .from('avatars')
-          .getPublicUrl('${appUser!.id}-copy.jpg');
-      await supabase.storage
-          .from('avatars')
-          .remove(['${appUser!.id}-copy.jpg']);
+      final publicUrl =
+          supabase.storage.from('avatars').getPublicUrl('${appUser!.id}.jpg');
       await supabase
           .from('profiles')
           .update({'avatar_url': publicUrl.data}).execute();
-      return {'status': true, 'url': storageResponse.data};
-    } else {
-      await supabase.storage
-          .from('avatars')
-          .move('${appUser!.id}-copy.jpg', '${appUser!.id}.jpg');
-      return {
-        'status': false,
-        'error': storageResponse.error?.message ?? 'Error occured.'
-      };
+      await saveAppUser();
+      return true;
     }
+
+    return false;
+  }
+
+  Future<void> removeProfilePicture() async {
+    await supabase.storage.from('avatars').remove(['${appUser!.id}.jpg']);
+    await supabase.from('profiles').update({'avatar_url': null}).execute();
+    await saveAppUser();
   }
 
   Future<void> removeAppUser() async {
