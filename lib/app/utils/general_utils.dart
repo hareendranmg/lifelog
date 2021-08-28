@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lifelog/app/modules/home/controllers/home_controller.dart';
-import 'package:lifelog/app/routes/app_pages.dart';
+
+import '../modules/home/controllers/home_controller.dart';
+import '../routes/app_pages.dart';
 
 void removeCurrentFocus(BuildContext context) {
   final currentFocus = FocusScope.of(context);
@@ -24,6 +25,6 @@ String getGreeting() {
 
 void routingCallback(Routing routing) {
   if (routing.current == Routes.HOME && routing.isBack!) {
-    Get.find<HomeController>().update(['header_name']);
+    Get.find<HomeController>().update(['header_name', 'header_profile_pic']);
   }
 }

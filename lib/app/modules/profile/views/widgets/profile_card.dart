@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:lifelog/app/modules/profile/controllers/profile_base_controller.dart';
 
 import '../../../../utils/asset_urls.dart';
+import '../../controllers/profile_base_controller.dart';
 import '../../controllers/profile_controller.dart';
 import 'profile_picture.dart';
 
