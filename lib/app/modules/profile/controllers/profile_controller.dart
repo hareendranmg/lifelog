@@ -79,4 +79,32 @@ class ProfileController extends ProfileBaseController {
       );
     }
   }
+
+  Future<void> updateName() async {
+    try {
+      if (nameEditFormKey.currentState!.saveAndValidate()) {
+        editingNameState = EditingNameState.saving;
+        final res = await userService.updateProfile(
+            formData: nameEditFormKey.currentState!.value);
+        editingNameState = EditingNameState.saved;
+
+        if (res) {
+          showSnackBar(
+            type: SnackbarType.success,
+            message: 'Name changed successfully',
+          );
+        } else {
+          showSnackBar(
+            type: SnackbarType.error,
+            message: 'Failed to update name. Please try again',
+          );
+        }
+      }
+    } catch (e) {
+      showSnackBar(
+        type: SnackbarType.error,
+        message: 'Failed to update name. Please try again',
+      );
+    }
+  }
 }

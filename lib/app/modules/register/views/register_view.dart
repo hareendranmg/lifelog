@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/global_widgets.dart';
@@ -53,27 +54,27 @@ class RegisterView extends GetView<RegisterController> {
             ),
             // id,fullname,mobile_number,username,avatar_url,updated_at
             const SizedBox(height: 20),
-            FormBuilderTextField(
-              name: 'mobile_number',
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Mobile',
-              ),
-              keyboardType: TextInputType.phone,
-              maxLength: 10,
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(
-                  context,
-                  errorText: 'Please enter your password',
-                ),
-                FormBuilderValidators.minLength(
-                  context,
-                  10,
-                  errorText: 'Please enter a valid mobile number',
-                ),
-              ]),
-            ),
-            const SizedBox(height: 20),
+            // FormBuilderTextField(
+            //   name: 'mobile_number',
+            //   decoration: const InputDecoration(
+            //     border: OutlineInputBorder(),
+            //     hintText: 'Mobile',
+            //   ),
+            //   keyboardType: TextInputType.phone,
+            //   maxLength: 10,
+            //   validator: FormBuilderValidators.compose([
+            //     FormBuilderValidators.required(
+            //       context,
+            //       errorText: 'Please enter your password',
+            //     ),
+            //     FormBuilderValidators.minLength(
+            //       context,
+            //       10,
+            //       errorText: 'Please enter a valid mobile number',
+            //     ),
+            //   ]),
+            // ),
+            // const SizedBox(height: 20),
             GetBuilder<RegisterController>(
                 builder: (_) => FormBuilderTextField(
                       name: 'password',
@@ -105,16 +106,20 @@ class RegisterView extends GetView<RegisterController> {
                     )),
             const SizedBox(height: 26),
             GetBuilder<RegisterController>(
-              builder: (_) => ElevatedButton(
-                onPressed: _.isRegistering ? null : () => controller.register(),
-                style: primaryButtonStyle,
-                child: _.isRegistering
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(),
-                      )
-                    : const Text('Register'),
+              builder: (_) => SizedBox(
+                height: 42.h,
+                child: ElevatedButton(
+                  onPressed:
+                      _.isRegistering ? null : () => controller.register(),
+                  style: primaryButtonStyle,
+                  child: _.isRegistering
+                      ? const SizedBox(
+                          height: 26,
+                          width: 26,
+                          child: CircularProgressIndicator(),
+                        )
+                      : const Text('Register'),
+                ),
               ),
             ),
             const SizedBox(height: 10),

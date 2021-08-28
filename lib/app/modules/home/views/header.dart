@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lifelog/app/services/user_services.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
@@ -24,9 +25,12 @@ class Header extends StatelessWidget {
               'Welcome',
               style: TextStyle(fontSize: 16.sp),
             ),
-            Text(
-              controller.appUser.name!,
-              style: TextStyle(fontSize: 24.sp),
+            GetBuilder<HomeController>(
+              id: 'header_name',
+              builder: (_) => Text(
+                Get.find<UserService>().appUser!.name!,
+                style: TextStyle(fontSize: 24.sp),
+              ),
             ),
           ],
         ),

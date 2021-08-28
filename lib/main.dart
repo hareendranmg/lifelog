@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lifelog/app/utils/general_utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app/routes/app_pages.dart';
@@ -28,6 +29,7 @@ Future<void> main() async {
           getPages: AppPages.routes,
           debugShowCheckedModeBanner: false,
           theme: themeData,
+          routingCallback: (routing) => routingCallback(routing!),
         ),
       ),
     ),

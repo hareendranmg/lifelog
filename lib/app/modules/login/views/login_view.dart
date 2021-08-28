@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
@@ -64,16 +65,19 @@ class LoginView extends GetView<LoginController> {
             ),
             const SizedBox(height: 26),
             GetBuilder<LoginController>(
-              builder: (_) => ElevatedButton(
-                onPressed: _.isLogging ? null : () => controller.login(),
-                style: primaryButtonStyle,
-                child: _.isLogging
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(),
-                      )
-                    : const Text('Login'),
+              builder: (_) => SizedBox(
+                height: 42.h,
+                child: ElevatedButton(
+                  onPressed: _.isLogging ? null : () => controller.login(),
+                  style: primaryButtonStyle,
+                  child: _.isLogging
+                      ? const SizedBox(
+                          height: 26,
+                          width: 26,
+                          child: CircularProgressIndicator(),
+                        )
+                      : const Text('Login'),
+                ),
               ),
             ),
             const SizedBox(height: 10),
