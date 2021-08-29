@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../services/account_services.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
-import 'header.dart';
+import 'widgets/account_area.dart';
+import 'widgets/header.dart';
 
 class HomeView extends GetView<HomeController> {
   @override
@@ -14,100 +15,33 @@ class HomeView extends GetView<HomeController> {
         child: ListView(
           padding: const EdgeInsets.all(12),
           children: [
-            Header(controller: controller),
-            SizedBox(height: 30.h),
+            const Header(),
+            const SizedBox(height: 30),
+            const AccountArea(),
+            const SizedBox(height: 30),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  '₹${Get.find<AccountService>().balance}',
-                  style:
-                      TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w500),
-                ),
-                SizedBox(height: 5.h),
-                Text(
-                  'You have ${Get.find<AccountService>().remainingPercentage}% income remaining',
-                  style: TextStyle(color: Colors.grey[600]),
-                ),
-              ],
-            ),
-            SizedBox(height: 25.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                AccountWidget(accountType: 'income'),
-                AccountWidget(accountType: 'expense'),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AccountWidget extends StatelessWidget {
-  const AccountWidget({Key? key, required this.accountType}) : super(key: key);
-
-  final String accountType;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 80.h,
-      width: Get.width * 0.4,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[200]!,
-            blurRadius: 20,
-            spreadRadius: 10,
-          )
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  accountType == 'income' ? 'Income' : 'Expense',
-                  style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
-                ),
-                SizedBox(height: 5.h),
                 Row(
                   children: [
-                    Text(
-                      accountType == 'income'
-                          ? '₹${Get.find<AccountService>().income}'
-                          : '₹${Get.find<AccountService>().expense}',
-                      style: TextStyle(
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    Text('Transactions', style: TextStyle(fontSize: 18.sp)),
                     const Spacer(),
-                    Transform.rotate(
-                      angle: 1,
-                      child: Icon(
-                        accountType == 'income'
-                            ? Icons.arrow_upward_rounded
-                            : Icons.arrow_downward_rounded,
-                        color:
-                            accountType == 'income' ? Colors.green : Colors.red,
+                    TextButton(
+                      onPressed: () => Get.toNamed(Routes.TRANSACTIONS),
+                      child: Row(
+                        children: const [
+                          Text('See all'),
+                          SizedBox(width: 5),
+                          Icon(Icons.arrow_forward_ios, size: 16)
+                        ],
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

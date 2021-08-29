@@ -84,8 +84,8 @@ class AuthServices {
   }
 
   static Future<void> logout() async {
-    await supabase.auth.signOut();
     await UserService().removeAppUser();
     Get.offAllNamed(Routes.LOGIN);
+    await supabase.auth.signOut();
   }
 }
