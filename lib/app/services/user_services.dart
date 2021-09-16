@@ -64,8 +64,9 @@ class UserService extends GetxService {
     return false;
   }
 
-  Future<bool> updateProfile(
-      {required final Map<String, dynamic> formData}) async {
+  Future<bool> updateProfile({
+    required final Map<String, dynamic> formData,
+  }) async {
     final res = await supabase.from('profiles').update(formData).execute();
     await saveAppUser();
     return res.data != null;

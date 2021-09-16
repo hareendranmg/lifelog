@@ -36,8 +36,9 @@ class AuthServices {
     }
   }
 
-  static Future<Map<String, dynamic>> register(
-      {required Map<String, dynamic> formData}) async {
+  static Future<Map<String, dynamic>> register({
+    required Map<String, dynamic> formData,
+  }) async {
     try {
       final Map<String, dynamic> result;
       // final mobileExist = await supabase

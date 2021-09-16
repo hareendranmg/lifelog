@@ -76,34 +76,32 @@ class RegisterView extends GetView<RegisterController> {
             // ),
             // const SizedBox(height: 20),
             GetBuilder<RegisterController>(
-                builder: (_) => FormBuilderTextField(
-                      name: 'password',
-                      obscureText: _.isObsecure,
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        hintText: 'Password',
-                        suffixIcon: IconButton(
-                          onPressed: () => _.isObsecure = !_.isObsecure,
-                          icon: Icon(
-                            _.isObsecure
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                          ),
-                        ),
-                      ),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                          context,
-                          errorText: 'Please enter your password',
-                        ),
-                        FormBuilderValidators.minLength(
-                          context,
-                          6,
-                          errorText:
-                              'Password should have minimum 6 characters',
-                        ),
-                      ]),
-                    )),
+              builder: (_) => FormBuilderTextField(
+                name: 'password',
+                obscureText: _.isObsecure,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'Password',
+                  suffixIcon: IconButton(
+                    onPressed: () => _.isObsecure = !_.isObsecure,
+                    icon: Icon(
+                      _.isObsecure ? Icons.visibility : Icons.visibility_off,
+                    ),
+                  ),
+                ),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(
+                    context,
+                    errorText: 'Please enter your password',
+                  ),
+                  FormBuilderValidators.minLength(
+                    context,
+                    6,
+                    errorText: 'Password should have minimum 6 characters',
+                  ),
+                ]),
+              ),
+            ),
             const SizedBox(height: 26),
             GetBuilder<RegisterController>(
               builder: (_) => SizedBox(

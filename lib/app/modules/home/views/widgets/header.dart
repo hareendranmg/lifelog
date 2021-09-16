@@ -15,7 +15,24 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              getGreeting(),
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+            ),
+            GetBuilder<HomeController>(
+              id: 'header_name',
+              builder: (_) => Text(
+                Get.find<UserService>().appUser!.name!,
+                style: TextStyle(fontSize: 20.sp),
+              ),
+            ),
+          ],
+        ),
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: GestureDetector(
@@ -34,23 +51,6 @@ class Header extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              getGreeting(),
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
-            ),
-            GetBuilder<HomeController>(
-              id: 'header_name',
-              builder: (_) => Text(
-                Get.find<UserService>().appUser!.name!,
-                style: TextStyle(fontSize: 20.sp),
-              ),
-            ),
-          ],
         ),
       ],
     );

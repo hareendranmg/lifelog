@@ -23,7 +23,8 @@ class ProfileController extends ProfileBaseController {
         isUpdatingProPic = true;
         final res = await userService.updateProfilePicture(croppedFile);
         await CachedNetworkImage.evictFromCache(
-            userService.appUser!.avatarUrl!);
+          userService.appUser!.avatarUrl!,
+        );
         isUpdatingProPic = false;
 
         Get.back();
@@ -51,14 +52,17 @@ class ProfileController extends ProfileBaseController {
           content: const Text('Are you sure to remove profile picture?'),
           actions: [
             TextButton(
-                onPressed: () => Get.back(), child: const Text('Cancel')),
+              onPressed: () => Get.back(),
+              child: const Text('Cancel'),
+            ),
             ElevatedButton(
               onPressed: () async {
                 Get.back();
                 Get.back();
                 isUpdatingProPic = true;
                 await CachedNetworkImage.evictFromCache(
-                    userService.appUser!.avatarUrl!);
+                  userService.appUser!.avatarUrl!,
+                );
                 await userService.removeProfilePicture();
                 isUpdatingProPic = false;
 
@@ -85,7 +89,8 @@ class ProfileController extends ProfileBaseController {
       if (nameEditFormKey.currentState!.saveAndValidate()) {
         editingNameState = EditingNameState.saving;
         final res = await userService.updateProfile(
-            formData: nameEditFormKey.currentState!.value);
+          formData: nameEditFormKey.currentState!.value,
+        );
         editingNameState = EditingNameState.saved;
 
         if (res) {
