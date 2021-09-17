@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/accounts/bindings/accounts_binding.dart';
+import '../modules/accounts/views/accounts_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -10,6 +12,10 @@ import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/root/bindings/root_binding.dart';
 import '../modules/root/views/root_view.dart';
+import '../modules/settings/bindings/settings_binding.dart';
+import '../modules/settings/views/settings_view.dart';
+import '../modules/statics/bindings/statics_binding.dart';
+import '../modules/statics/views/statics_view.dart';
 import '../modules/transactions/bindings/transactions_binding.dart';
 import '../modules/transactions/views/transactions_view.dart';
 
@@ -50,6 +56,21 @@ class AppPages {
       name: _Paths.TRANSACTIONS,
       page: () => TransactionsView(),
       binding: TransactionsBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNTS,
+      page: () => AccountsView(),
+      binding: AccountsBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTINGS,
+      page: () => SettingsView(),
+      binding: SettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.STATICS,
+      page: () => StaticsView(),
+      binding: StaticsBinding(),
     ),
   ];
 }

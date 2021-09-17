@@ -11,6 +11,7 @@ class RootView extends GetView<RootController> {
       value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: GetBuilder<RootController>(
         builder: (_) => const Scaffold(
