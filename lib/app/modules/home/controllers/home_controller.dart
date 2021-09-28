@@ -1,7 +1,3 @@
-import 'package:get/get.dart';
+import 'home_base_controller.dart';
 
-import '../../../services/user_services.dart';
-
-class HomeController extends GetxController {
-  final appUser = Get.find<UserService>().appUser!;
-}
+class HomeController extends HomeBaseController {}

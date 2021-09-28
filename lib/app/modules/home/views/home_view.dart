@@ -16,9 +16,9 @@ class HomeView extends GetView<HomeController> {
           padding: const EdgeInsets.all(12),
           children: const [
             Header(),
-            SizedBox(height: 30),
+            SizedBox(height: 5),
             AccountArea(),
-            SizedBox(height: 30),
+            SizedBox(height: 20),
             QuickActions(),
             Transactions(),
           ],
