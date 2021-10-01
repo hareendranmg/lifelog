@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../data/account.dart';
 import '../utils/constants.dart';
 
 class AccountService extends GetxService {
@@ -60,6 +61,18 @@ class AccountService extends GetxService {
       totalExpense = 0;
       totalBalance = 0;
       totalRemainingPercent = 0;
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> getIncomeCategoriess() async {
+    try {
+      final incomeCategoriesDbRes =
+          await supabase.from('accounts').select().execute();
+      print(Account.fromJson(
+              incomeCategoriesDbRes.data[0] as Map<String, dynamic>)
+          .toJson());
+    } catch (e) {
       debugPrint(e.toString());
     }
   }
