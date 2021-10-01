@@ -6,30 +6,61 @@ import '../utils/constants.dart';
 
 class AccountService extends GetxService {
   final box = GetStorage();
-  int income = 0;
-  int expense = 0;
-  int balance = 0;
-  int remainingPercentage = 0;
+  int currentMonthIncome = 0;
+  int currentMonthExpense = 0;
+  int currentMonthBalance = 0;
+  int currentMonthRemainingPercent = 0;
+
+  int totalIncome = 0;
+  int totalExpense = 0;
+  int totalBalance = 0;
+  int totalRemainingPercent = 0;
 
   Future<AccountService> init() async {
+    await getCurrentMonthAccountDet();
+    await getTotalAccountDet();
+    return this;
+  }
+
+  Future<void> getCurrentMonthAccountDet() async {
     try {
       final incomeDbRes =
           await supabase.from('income').select('amount').execute();
-      income = incomeDbRes.data as int? ?? 0;
+      currentMonthIncome = incomeDbRes.data as int? ?? 0;
       final expenseDbRes =
           await supabase.from('expense').select('amount').execute();
-      expense = expenseDbRes.data as int? ?? 0;
+      currentMonthExpense = expenseDbRes.data as int? ?? 0;
 
-      balance = income - expense;
-      remainingPercentage = 100 - ((balance / income) * 100).round();
-      return this;
+      currentMonthBalance = currentMonthIncome - currentMonthExpense;
+      currentMonthRemainingPercent =
+          100 - ((currentMonthBalance / currentMonthIncome) * 100).round();
     } catch (e) {
-      income = 0;
-      expense = 0;
-      balance = 0;
-      remainingPercentage = 0;
+      currentMonthIncome = 0;
+      currentMonthExpense = 0;
+      currentMonthBalance = 0;
+      currentMonthRemainingPercent = 0;
       debugPrint(e.toString());
-      return this;
+    }
+  }
+
+  Future<void> getTotalAccountDet() async {
+    try {
+      final incomeDbRes =
+          await supabase.from('income').select('amount').execute();
+      totalIncome = incomeDbRes.data as int? ?? 0;
+      final expenseDbRes =
+          await supabase.from('expense').select('amount').execute();
+      totalExpense = expenseDbRes.data as int? ?? 0;
+
+      totalBalance = totalIncome - totalExpense;
+      totalRemainingPercent =
+          100 - ((totalBalance / totalIncome) * 100).round();
+    } catch (e) {
+      totalIncome = 0;
+      totalExpense = 0;
+      totalBalance = 0;
+      totalRemainingPercent = 0;
+      debugPrint(e.toString());
     }
   }
 }

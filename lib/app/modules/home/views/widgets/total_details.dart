@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../services/account_services.dart';
 import 'account_details.dart';
 
-class CurrentMonthDetails extends StatelessWidget {
-  const CurrentMonthDetails({
+class TotalDetails extends StatelessWidget {
+  const TotalDetails({
     Key? key,
   }) : super(key: key);
 
@@ -23,12 +22,12 @@ class CurrentMonthDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '₹${Get.find<AccountService>().currentMonthBalance}',
-                style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w500),
+                'Total',
+                style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w300),
               ),
               Text(
-                DateFormat.yMMMM().format(DateTime.now()),
-                style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w300),
+                '₹${Get.find<AccountService>().totalBalance}',
+                style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -38,11 +37,11 @@ class CurrentMonthDetails extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20),
           alignment: Alignment.topLeft,
           child: Text(
-            'You have ${Get.find<AccountService>().currentMonthRemainingPercent}% income remaining',
+            'You have ${Get.find<AccountService>().totalRemainingPercent}% income remaining',
             style: TextStyle(color: Colors.grey[600]),
           ),
         ),
-        const SizedBox(height: 15),
+        SizedBox(height: 25.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: const [

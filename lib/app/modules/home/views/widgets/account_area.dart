@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../controllers/home_controller.dart';
-import 'all_time_details.dart';
 import 'current_month_details.dart';
+import 'total_details.dart';
 
 class AccountArea extends StatelessWidget {
   const AccountArea({
@@ -22,7 +22,7 @@ class AccountArea extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             itemBuilder: (final context, final i) => const [
               CurrentMonthDetails(),
-              AllTimeDetails(),
+              TotalDetails(),
             ][i % 2],
           ),
         ),

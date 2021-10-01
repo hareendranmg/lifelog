@@ -42,8 +42,8 @@ class AccountWidget extends StatelessWidget {
                   children: [
                     Text(
                       accountType == 'income'
-                          ? '₹${Get.find<AccountService>().income}'
-                          : '₹${Get.find<AccountService>().expense}',
+                          ? '₹${Get.find<AccountService>().currentMonthIncome}'
+                          : '₹${Get.find<AccountService>().currentMonthExpense}',
                       style: TextStyle(
                         fontSize: 22.sp,
                         fontWeight: FontWeight.w500,
