@@ -1,3 +1,4 @@
+// import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -41,39 +42,43 @@ class AuthServices {
   }) async {
     try {
       final Map<String, dynamic> result;
-      // final mobileExist = await supabase
-      //     .from('profiles')
-      //     .select()
-      //     .eq('mobile_number', formData['mobile_number'])
-      //     .execute(count: CountOption.exact);
-      // if (mobileExist.count == 0) {
-      final signupRes = await supabase.auth.signUp(
-        formData['email']! as String,
-        formData['password']! as String,
-      );
 
-      if (signupRes.data != null) {
-        await supabase.from('profiles').insert({
-          'id': signupRes.data!.user!.id,
-          'name': formData['fullname'],
-          // 'mobile_number': formData['mobile_number'],
-          'email': formData['email'],
-        }).execute();
-        result = {'status': true, 'message': 'Successful'};
+      final emailExist = await supabase
+          .from('profiles')
+          .select()
+          .eq('email', formData['email'])
+          .execute();
+
+      if (emailExist.error == null && (emailExist.data as List).isEmpty) {
+        final signupRes = await supabase.auth.signUp(
+          formData['email']! as String,
+          formData['password']! as String,
+        );
+
+        if (signupRes.data != null) {
+          await supabase.from('profiles').insert({
+            'id': signupRes.data!.user!.id,
+            'name': formData['fullname'],
+            // 'mobile_number': formData['mobile_number'],
+            'email': formData['email'],
+          }).execute();
+          result = {'status': true, 'message': 'Successful'};
+        } else {
+          result = {
+            'status': false,
+            'is_warning': true,
+            'message':
+                signupRes.error?.message ?? 'Error occured. Please try again',
+          };
+        }
       } else {
         result = {
           'status': false,
+          'is_warning': true,
           'message':
-              signupRes.error?.message ?? 'Error occured. Please try again',
+              'An user with the same email already registered. Please use another email',
         };
       }
-      // } else {
-      //   result = {
-      //     'status': false,
-      //     'message':
-      //         'Mobile number already taken. Please use another mobile number',
-      //   };
-      // }
       return result;
     } catch (e) {
       debugPrint(e.toString());

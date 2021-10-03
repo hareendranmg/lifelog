@@ -27,7 +27,9 @@ class RegisterController extends GetxController {
           );
         } else {
           showSnackBar(
-            type: SnackbarType.error,
+            type: registerRes['is_warning'] as bool
+                ? SnackbarType.warning
+                : SnackbarType.error,
             message: registerRes['message'] as String,
           );
         }

@@ -62,7 +62,7 @@ class ProfileCard extends StatelessWidget {
                     )
                   else
                     Text(
-                      _.userService.appUser!.name!,
+                      _.userService.appUser!.name,
                       style: TextStyle(fontSize: 18.sp),
                     ),
                   const SizedBox(width: 6),

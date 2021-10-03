@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../data/account.dart';
 import '../utils/constants.dart';
 
 class AccountService extends GetxService {
@@ -68,10 +69,8 @@ class AccountService extends GetxService {
   Future<void> getIncomeCategoriess() async {
     try {
       final incomeCategoriesDbRes =
-          await supabase.from('accounts').select().execute();
-      print(Account.fromJson(
-              incomeCategoriesDbRes.data[0] as Map<String, dynamic>)
-          .toJson());
+          await supabase.from('income').select().execute();
+      print(jsonEncode(incomeCategoriesDbRes.data[0]));
     } catch (e) {
       debugPrint(e.toString());
     }

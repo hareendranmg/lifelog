@@ -27,7 +27,7 @@ class Header extends StatelessWidget {
             GetBuilder<HomeController>(
               id: 'header_name',
               builder: (_) => Text(
-                Get.find<UserService>().appUser!.name!,
+                Get.find<UserService>().appUser!.name,
                 style: TextStyle(fontSize: 20.sp),
               ),
             ),

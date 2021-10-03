@@ -1,11 +1,11 @@
 class ExpenseCategory {
-  late int id;
-  late String userId;
-  late String name;
-  late String remarks;
-  String? iconUrl;
-  late DateTime createdAt;
-  late DateTime updatedAt;
+  late final int id;
+  late final String userId;
+  late final String name;
+  late final String remarks;
+  late final String? iconUrl;
+  late final DateTime createdAt;
+  late final DateTime updatedAt;
 
   ExpenseCategory({
     required this.id,
