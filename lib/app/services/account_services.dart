@@ -1,22 +1,38 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../data/expense.dart';
+import '../data/expense_category.dart';
+import '../data/income.dart';
+import '../data/income_category.dart';
 import '../utils/constants.dart';
 
 class AccountService extends GetxService {
   final box = GetStorage();
-  int currentMonthIncome = 0;
-  int currentMonthExpense = 0;
-  int currentMonthBalance = 0;
-  int currentMonthRemainingPercent = 0;
 
-  int totalIncome = 0;
-  int totalExpense = 0;
-  int totalBalance = 0;
-  int totalRemainingPercent = 0;
+  final startDate =
+      DateTime(DateTime.now().year, DateTime.now().month).toIso8601String();
+  final endDate = DateTime(DateTime.now().year, DateTime.now().month + 1, 0)
+      .toIso8601String();
+
+  List<IncomeCategory> incomeCategories = [];
+  List<ExpenseCategory> expenseCategories = [];
+
+  List<Income> currentIncomeList = [];
+  List<Expense> currentExpenseList = [];
+  List<Income> totalIncomeList = [];
+  List<Expense> totalExpenseList = [];
+
+  double currentMonthIncome = 0;
+  double currentMonthExpense = 0;
+  double currentMonthBalance = 0;
+  double currentMonthRemainingPercent = 0;
+
+  double totalIncome = 0;
+  double totalExpense = 0;
+  double totalBalance = 0;
+  double totalRemainingPercent = 0;
 
   Future<AccountService> init() async {
     await getCurrentMonthAccountDet();
@@ -26,16 +42,34 @@ class AccountService extends GetxService {
 
   Future<void> getCurrentMonthAccountDet() async {
     try {
-      final incomeDbRes =
-          await supabase.from('income').select('amount').execute();
-      currentMonthIncome = incomeDbRes.data as int? ?? 0;
-      final expenseDbRes =
-          await supabase.from('expense').select('amount').execute();
-      currentMonthExpense = expenseDbRes.data as int? ?? 0;
+      currentIncomeList.clear();
+      currentExpenseList.clear();
+      await getIncomeCategories();
 
+      for (final incomeCategory in incomeCategories) {
+        final incomeList = await getIncomeCategoryWiseAmount(
+          incomeCategory.id,
+          startDate: startDate,
+          endDate: endDate,
+        );
+        currentIncomeList.addAll(incomeList);
+      }
+
+      await getExpenseCategories();
+      for (final expenseCategory in expenseCategories) {
+        final expenseList = await getExpenseCategoryWiseAmount(
+          expenseCategory.id,
+          startDate: startDate,
+          endDate: endDate,
+        );
+        currentExpenseList.addAll(expenseList);
+      }
+
+      currentMonthIncome = currentIncomeList.fold(0, (a, b) => a + b.amount);
+      currentMonthExpense = currentExpenseList.fold(0, (a, b) => a + b.amount);
       currentMonthBalance = currentMonthIncome - currentMonthExpense;
       currentMonthRemainingPercent =
-          100 - ((currentMonthBalance / currentMonthIncome) * 100).round();
+          ((currentMonthBalance / currentMonthIncome) * 100).toPrecision(2);
     } catch (e) {
       currentMonthIncome = 0;
       currentMonthExpense = 0;
@@ -47,16 +81,26 @@ class AccountService extends GetxService {
 
   Future<void> getTotalAccountDet() async {
     try {
-      final incomeDbRes =
-          await supabase.from('income').select('amount').execute();
-      totalIncome = incomeDbRes.data as int? ?? 0;
-      final expenseDbRes =
-          await supabase.from('expense').select('amount').execute();
-      totalExpense = expenseDbRes.data as int? ?? 0;
+      totalIncomeList.clear();
+      totalExpenseList.clear();
+      await getIncomeCategories();
+      for (final incomeCategory in incomeCategories) {
+        final incomeList = await getIncomeCategoryWiseAmount(incomeCategory.id);
+        totalIncomeList.addAll(incomeList);
+      }
 
+      await getExpenseCategories();
+      for (final expenseCategory in expenseCategories) {
+        final expenseList =
+            await getExpenseCategoryWiseAmount(expenseCategory.id);
+        totalExpenseList.addAll(expenseList);
+      }
+
+      totalIncome = totalIncomeList.fold(0, (a, b) => a + b.amount);
+      totalExpense = totalExpenseList.fold(0, (a, b) => a + b.amount);
       totalBalance = totalIncome - totalExpense;
       totalRemainingPercent =
-          100 - ((totalBalance / totalIncome) * 100).round();
+          ((totalBalance / totalIncome) * 100).toPrecision(2);
     } catch (e) {
       totalIncome = 0;
       totalExpense = 0;
@@ -66,13 +110,122 @@ class AccountService extends GetxService {
     }
   }
 
-  Future<void> getIncomeCategoriess() async {
+  Future<void> getIncomeCategories() async {
     try {
-      final incomeCategoriesDbRes =
-          await supabase.from('income').select().execute();
-      print(jsonEncode(incomeCategoriesDbRes.data[0]));
+      final incomeCategoriesList = await supabase
+          .from('income_categories')
+          .select()
+          .execute()
+          .then((value) => value.data as List);
+
+      incomeCategories = List<IncomeCategory>.from(
+        incomeCategoriesList
+            .map((e) => IncomeCategory.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<void> getExpenseCategories() async {
+    try {
+      final expenseCategoriesList = await supabase
+          .from('expense_categories')
+          .select()
+          .execute()
+          .then((value) => value.data as List);
+
+      expenseCategories = List<ExpenseCategory>.from(
+        expenseCategoriesList
+            .map((e) => ExpenseCategory.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<List<Income>> getIncomeCategoryWiseAmount(
+    int category, {
+    final String? startDate,
+    final String? endDate,
+  }) async {
+    try {
+      if (startDate != null && endDate != null) {
+        return await supabase
+            .from('income')
+            .select()
+            .lte('created_at', endDate)
+            .gte('created_at', startDate)
+            .eq('income_category', category)
+            .execute()
+            .then(
+              (value) => List<Income>.from(
+                (value.data as List)
+                    .map((e) => Income.fromJson(e as Map<String, dynamic>))
+                    .toList(),
+              ),
+            );
+      } else {
+        final incomeList = await supabase
+            .from('income')
+            .select()
+            .eq('income_category', category)
+            .execute()
+            .then(
+              (value) => List<Income>.from(
+                (value.data as List)
+                    .map((e) => Income.fromJson(e as Map<String, dynamic>))
+                    .toList(),
+              ),
+            );
+        return incomeList;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return [];
+    }
+  }
+
+  Future<List<Expense>> getExpenseCategoryWiseAmount(
+    int category, {
+    final String? startDate,
+    final String? endDate,
+  }) async {
+    try {
+      if (startDate != null && endDate != null) {
+        return await supabase
+            .from('expense')
+            .select()
+            .lte('created_at', endDate)
+            .gte('created_at', startDate)
+            .eq('expense_category', category)
+            .execute()
+            .then(
+              (value) => List<Expense>.from(
+                (value.data as List)
+                    .map((e) => Expense.fromJson(e as Map<String, dynamic>))
+                    .toList(),
+              ),
+            );
+      } else {
+        return await supabase
+            .from('expense')
+            .select()
+            .eq('expense_category', category)
+            .execute()
+            .then(
+              (value) => List<Expense>.from(
+                (value.data as List)
+                    .map((e) => Expense.fromJson(e as Map<String, dynamic>))
+                    .toList(),
+              ),
+            );
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return [];
     }
   }
 }

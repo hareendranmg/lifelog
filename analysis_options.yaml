@@ -12,6 +12,7 @@ linter:
   rules:
     prefer_single_quotes: true
     prefer_relative_imports: true
+    prefer_final_locals: true
     constant_identifier_names: false
     sort_constructors_first: false
     avoid_classes_with_only_static_members: false

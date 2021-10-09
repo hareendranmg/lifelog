@@ -5,14 +5,23 @@ import 'package:get/get.dart';
 import '../../../../services/account_services.dart';
 
 class AccountWidget extends StatelessWidget {
-  const AccountWidget({Key? key, required this.accountType}) : super(key: key);
+  const AccountWidget({
+    Key? key,
+    required this.accountLabel,
+    required this.amount,
+    required this.textColor,
+    required this.icon,
+  }) : super(key: key);
 
-  final String accountType;
+  final String accountLabel;
+  final double amount;
+  final Color textColor;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.find<AccountService>().getIncomeCategoriess(),
+      onTap: () => Get.find<AccountService>().getIncomeCategoryWiseAmount(3),
       child: Container(
         height: 80.h,
         width: Get.width * 0.4,
@@ -36,34 +45,28 @@ class AccountWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    accountType == 'income' ? 'Income' : 'Expense',
+                    accountLabel,
                     style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
                   ),
                   SizedBox(height: 5.h),
                   Row(
                     children: [
                       Text(
-                        accountType == 'income'
-                            ? '₹${Get.find<AccountService>().currentMonthIncome}'
-                            : '₹${Get.find<AccountService>().currentMonthExpense}',
+                        '$amount',
                         style: TextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.w500,
-                          color: accountType == 'income'
-                              ? Colors.green
-                              : Colors.red[600],
+                          color: textColor,
                         ),
                       ),
                       const Spacer(),
                       Transform.rotate(
                         angle: 1,
                         child: Icon(
-                          accountType == 'income'
-                              ? Icons.arrow_downward_rounded
-                              : Icons.arrow_upward_rounded,
-                          color: accountType == 'income'
-                              ? Colors.green
-                              : Colors.red[600],
+                          icon,
+                          // ? Icons.arrow_drop_up
+                          // : Icons.arrow_drop_down,
+                          color: textColor,
                         ),
                       ),
                     ],

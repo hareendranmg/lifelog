@@ -44,9 +44,19 @@ class TotalDetails extends StatelessWidget {
         SizedBox(height: 25.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            AccountWidget(accountType: 'income'),
-            AccountWidget(accountType: 'expense'),
+          children: [
+            AccountWidget(
+              accountLabel: 'Income',
+              amount: Get.find<AccountService>().totalIncome,
+              textColor: Colors.green[600]!,
+              icon: Icons.arrow_upward,
+            ),
+            AccountWidget(
+              accountLabel: 'Expense',
+              amount: Get.find<AccountService>().totalExpense,
+              textColor: Colors.red,
+              icon: Icons.arrow_downward,
+            ),
           ],
         )
       ],

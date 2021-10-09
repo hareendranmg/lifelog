@@ -45,9 +45,19 @@ class CurrentMonthDetails extends StatelessWidget {
         const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            AccountWidget(accountType: 'income'),
-            AccountWidget(accountType: 'expense'),
+          children: [
+            AccountWidget(
+              accountLabel: 'Income',
+              amount: Get.find<AccountService>().currentMonthIncome,
+              textColor: Colors.green[600]!,
+              icon: Icons.arrow_upward,
+            ),
+            AccountWidget(
+              accountLabel: 'Expense',
+              amount: Get.find<AccountService>().currentMonthExpense,
+              textColor: Colors.red,
+              icon: Icons.arrow_downward,
+            ),
           ],
         )
       ],
