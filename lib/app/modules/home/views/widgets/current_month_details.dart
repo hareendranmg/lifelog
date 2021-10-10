@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../routes/app_pages.dart';
 import '../../../../services/account_services.dart';
 import 'account_details.dart';
 
@@ -24,16 +24,17 @@ class CurrentMonthDetails extends StatelessWidget {
             children: [
               Text(
                 '₹${Get.find<AccountService>().currentMonthBalance}',
-                style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
               ),
               Text(
                 DateFormat.yMMMM().format(DateTime.now()),
-                style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w300),
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w300),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 5),
         Container(
           padding: const EdgeInsets.only(left: 20),
           alignment: Alignment.topLeft,
@@ -50,13 +51,15 @@ class CurrentMonthDetails extends StatelessWidget {
               accountLabel: 'Income',
               amount: Get.find<AccountService>().currentMonthIncome,
               textColor: Colors.green[600]!,
-              icon: Icons.arrow_upward,
+              icon: Icons.arrow_downward,
+              route: Routes.ADD_INCOME,
             ),
             AccountWidget(
               accountLabel: 'Expense',
               amount: Get.find<AccountService>().currentMonthExpense,
               textColor: Colors.red,
-              icon: Icons.arrow_downward,
+              icon: Icons.arrow_upward,
+              route: Routes.ADD_EXPENSE,
             ),
           ],
         )

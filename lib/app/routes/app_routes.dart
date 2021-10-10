@@ -5,6 +5,8 @@ abstract class Routes {
   Routes._();
 
   static const HOME = _Paths.HOME;
+  static const ADD_INCOME = _Paths.ADD_INCOME;
+  static const ADD_EXPENSE = _Paths.ADD_EXPENSE;
   static const LOGIN = _Paths.LOGIN;
   static const ROOT = _Paths.ROOT;
   static const REGISTER = _Paths.REGISTER;
@@ -17,6 +19,8 @@ abstract class Routes {
 
 abstract class _Paths {
   static const HOME = '/home';
+  static const ADD_INCOME = '/add-income';
+  static const ADD_EXPENSE = '/add-expense';
   static const LOGIN = '/login';
   static const ROOT = '/root';
   static const REGISTER = '/register';

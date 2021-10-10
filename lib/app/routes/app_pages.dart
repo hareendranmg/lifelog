@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import '../modules/accounts/bindings/accounts_binding.dart';
 import '../modules/accounts/views/accounts_view.dart';
 import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/views/add_expense_view.dart';
+import '../modules/home/views/add_income_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
@@ -28,9 +30,9 @@ class AppPages {
 
   static final routes = [
     GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
+      name: _Paths.ROOT,
+      page: () => RootView(),
+      binding: RootBinding(),
     ),
     GetPage(
       name: _Paths.LOGIN,
@@ -38,14 +40,24 @@ class AppPages {
       binding: LoginBinding(),
     ),
     GetPage(
-      name: _Paths.ROOT,
-      page: () => RootView(),
-      binding: RootBinding(),
-    ),
-    GetPage(
       name: _Paths.REGISTER,
       page: () => RegisterView(),
       binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME,
+      page: () => HomeView(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_INCOME,
+      page: () => AddIncomeView(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_EXPENSE,
+      page: () => AddExpenseView(),
+      binding: HomeBinding(),
     ),
     GetPage(
       name: _Paths.PROFILE,

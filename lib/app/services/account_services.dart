@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../data/account.dart';
 import '../data/expense.dart';
 import '../data/expense_category.dart';
 import '../data/income.dart';
@@ -15,6 +16,8 @@ class AccountService extends GetxService {
       DateTime(DateTime.now().year, DateTime.now().month).toIso8601String();
   final endDate = DateTime(DateTime.now().year, DateTime.now().month + 1, 0)
       .toIso8601String();
+
+  List<Account> accounts = [];
 
   List<IncomeCategory> incomeCategories = [];
   List<ExpenseCategory> expenseCategories = [];
@@ -35,6 +38,7 @@ class AccountService extends GetxService {
   double totalRemainingPercent = 0;
 
   Future<AccountService> init() async {
+    await getAccounts();
     await getCurrentMonthAccountDet();
     await getTotalAccountDet();
     return this;
@@ -110,7 +114,23 @@ class AccountService extends GetxService {
     }
   }
 
-  Future<void> getIncomeCategories() async {
+  Future<List<Account>> getAccounts() async {
+    try {
+      accounts.clear();
+      return accounts = await supabase.from('accounts').select().execute().then(
+            (value) => List<Account>.from(
+              (value.data as List)
+                  .map((e) => Account.fromJson(e as Map<String, dynamic>))
+                  .toList(),
+            ),
+          );
+    } catch (e) {
+      debugPrint(e.toString());
+      return accounts;
+    }
+  }
+
+  Future<List<IncomeCategory>> getIncomeCategories() async {
     try {
       final incomeCategoriesList = await supabase
           .from('income_categories')
@@ -118,17 +138,18 @@ class AccountService extends GetxService {
           .execute()
           .then((value) => value.data as List);
 
-      incomeCategories = List<IncomeCategory>.from(
+      return incomeCategories = List<IncomeCategory>.from(
         incomeCategoriesList
             .map((e) => IncomeCategory.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
     } catch (e) {
       debugPrint(e.toString());
+      return incomeCategories;
     }
   }
 
-  Future<void> getExpenseCategories() async {
+  Future<List<ExpenseCategory>> getExpenseCategories() async {
     try {
       final expenseCategoriesList = await supabase
           .from('expense_categories')
@@ -136,13 +157,14 @@ class AccountService extends GetxService {
           .execute()
           .then((value) => value.data as List);
 
-      expenseCategories = List<ExpenseCategory>.from(
+      return expenseCategories = List<ExpenseCategory>.from(
         expenseCategoriesList
             .map((e) => ExpenseCategory.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
     } catch (e) {
       debugPrint(e.toString());
+      return expenseCategories;
     }
   }
 

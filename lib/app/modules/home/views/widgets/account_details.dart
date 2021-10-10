@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
-import '../../../../services/account_services.dart';
 
 class AccountWidget extends StatelessWidget {
   const AccountWidget({
@@ -11,19 +8,21 @@ class AccountWidget extends StatelessWidget {
     required this.amount,
     required this.textColor,
     required this.icon,
+    required this.route,
   }) : super(key: key);
 
   final String accountLabel;
   final double amount;
   final Color textColor;
   final IconData icon;
+  final String route;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.find<AccountService>().getIncomeCategoryWiseAmount(3),
+      onTap: () => Get.toNamed(route),
       child: Container(
-        height: 80.h,
+        height: 80,
         width: Get.width * 0.4,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -46,15 +45,15 @@ class AccountWidget extends StatelessWidget {
                 children: [
                   Text(
                     accountLabel,
-                    style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   ),
-                  SizedBox(height: 5.h),
+                  const SizedBox(height: 5),
                   Row(
                     children: [
                       Text(
                         '$amount',
                         style: TextStyle(
-                          fontSize: 22.sp,
+                          fontSize: 22,
                           fontWeight: FontWeight.w500,
                           color: textColor,
                         ),
@@ -62,12 +61,7 @@ class AccountWidget extends StatelessWidget {
                       const Spacer(),
                       Transform.rotate(
                         angle: 1,
-                        child: Icon(
-                          icon,
-                          // ? Icons.arrow_drop_up
-                          // : Icons.arrow_drop_down,
-                          color: textColor,
-                        ),
+                        child: Icon(icon, color: textColor),
                       ),
                     ],
                   ),
