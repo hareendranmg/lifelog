@@ -6,6 +6,7 @@ class Income {
   late final double amount;
   late final String remarks;
   late final String? fileUrl;
+  late final DateTime date;
   late final DateTime createdAt;
   late final DateTime updatedAt;
 
@@ -29,6 +30,7 @@ class Income {
     amount = json['amount'] as double;
     remarks = json['remarks'] as String;
     fileUrl = json['file_url'] as String?;
+    date = DateTime.parse(json['date'] as String);
     createdAt = DateTime.parse(json['created_at'] as String);
     updatedAt = DateTime.parse(json['updated_at'] as String);
   }
@@ -40,6 +42,7 @@ class Income {
     data['account'] = account;
     data['income_category'] = incomeCategory;
     data['amount'] = amount;
+    data['date'] = date;
     data['remarks'] = remarks;
     data['file_url'] = fileUrl;
     data['created_at'] = createdAt.toIso8601String();

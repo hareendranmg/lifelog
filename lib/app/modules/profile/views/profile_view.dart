@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../utils/global_widgets.dart';
+import '../../../global_widgets/custom_scaffold.dart';
 import '../controllers/profile_controller.dart';
 import 'widgets/profile_appbar.dart';
 import 'widgets/profile_card.dart';

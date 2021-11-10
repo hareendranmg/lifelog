@@ -7,6 +7,7 @@ environment:
 
 dependencies: 
   cached_network_image: ^3.1.0
+  file_picker: ^4.2.2+1
   flutter: 
     sdk: flutter
   flutter_form_builder: ^6.0.1

@@ -3,7 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../utils/global_widgets.dart';
+import '../../../global_widgets/custom_scaffold.dart';
 import '../../../utils/theme_data.dart';
 import '../controllers/register_controller.dart';
 

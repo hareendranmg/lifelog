@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../utils/global_widgets.dart';
+import '../../../utils/general_utils.dart';
 import 'profile_base_controller.dart';
 
 class ProfileController extends ProfileBaseController {

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../services/auth_services.dart';
-import '../../../utils/global_widgets.dart';
+import '../../../utils/general_utils.dart';
 
 class RegisterController extends GetxController {
   final formKey = GlobalKey<FormBuilderState>();

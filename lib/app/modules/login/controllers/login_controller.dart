@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../services/auth_services.dart';
-import '../../../utils/global_widgets.dart';
+import '../../../utils/general_utils.dart';
 
 class LoginController extends GetxController {
   final formKey = GlobalKey<FormBuilderState>();
