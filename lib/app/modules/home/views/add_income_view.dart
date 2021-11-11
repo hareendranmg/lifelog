@@ -17,7 +17,7 @@ class AddIncomeView extends GetView<HomeController> {
           padding: const EdgeInsets.all(10),
           children: [
             FormBuilderTextField(
-              name: 'income',
+              name: 'amount',
               keyboardType: TextInputType.number,
               validator: FormBuilderValidators.compose(
                 [FormBuilderValidators.required(context)],
@@ -90,9 +90,39 @@ class AddIncomeView extends GetView<HomeController> {
               ),
             ),
             const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () => controller.addIncome(),
-              child: const Text('Add'),
+            GetBuilder<HomeController>(
+              builder: (_) => Row(
+                children: [
+                  const Text('Related File'),
+                  if (_.fileName != null)
+                    Expanded(
+                      child: Text(
+                        ' - ${_.fileName}',
+                        style: TextStyle(color: Get.theme.primaryColor),
+                      ),
+                    )
+                  else
+                    const Spacer(),
+                  OutlinedButton.icon(
+                    onPressed: _.file != null ? _.removeFile : _.pickFile,
+                    icon: _.file != null
+                        ? const Icon(Icons.remove_circle_outline)
+                        : const Icon(Icons.file_upload_outlined),
+                    label: _.file != null
+                        ? const Text('Remove File')
+                        : const Text('Upload File'),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            GetBuilder<HomeController>(
+              builder: (_) => ElevatedButton(
+                onPressed: _.isDataUploading ? null : _.addIncome,
+                child: _.isDataUploading
+                    ? const Text('Adding...')
+                    : const Text('Add'),
+              ),
             ),
           ],
         ),

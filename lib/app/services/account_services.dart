@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:path/path.dart' as p;
 
 import '../data/account.dart';
 import '../data/expense.dart';
@@ -254,22 +254,70 @@ class AccountService extends GetxService {
     }
   }
 
-  Future<Map<String, dynamic>?> pickFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'pdf', 'png', 'jpeg'],
-      withData: true,
-      withReadStream: true,
-    );
+  Future<Map<String, dynamic>> addIncome(
+    final Map<String, dynamic> formData, {
+    final File? file,
+  }) async {
+    try {
+      final response = await supabase.from('income').insert(formData).execute();
+      if (response.error == null) {
+        if (file != null) {
+          final incomeId = response.data[0]['id'] as int;
+          await supabase.storage
+              .from('income-docs')
+              .upload('$incomeId${p.extension(file.path)}', file);
 
-    if (result != null) {
-      final fileName = result.files[0].name;
-      final file = File(result.files[0].path!);
-      return {
-        'fileName': fileName,
-        'file': file,
-      };
+          final publicUrl = supabase.storage
+              .from('income-docs')
+              .getPublicUrl('$incomeId${p.extension(file.path)}');
+
+          await supabase
+              .from('income')
+              .update({'file_url': publicUrl.data})
+              .eq('id', incomeId)
+              .execute();
+        }
+        return {'status': true, 'message': 'Income added successfully'};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return {'status': false, 'message': e.toString()};
     }
-    return null;
+  }
+
+  Future<Map<String, dynamic>> addExpense(
+    final Map<String, dynamic> formData, {
+    final File? file,
+  }) async {
+    try {
+      final response =
+          await supabase.from('expense').insert(formData).execute();
+      if (response.error == null) {
+        if (file != null) {
+          final expenseId = response.data[0]['id'] as int;
+          await supabase.storage
+              .from('expense-docs')
+              .upload('$expenseId${p.extension(file.path)}', file);
+
+          final publicUrl = supabase.storage
+              .from('expense-docs')
+              .getPublicUrl('$expenseId${p.extension(file.path)}');
+
+          await supabase
+              .from('expense')
+              .update({'file_url': publicUrl.data})
+              .eq('id', expenseId)
+              .execute();
+        }
+        return {'status': true, 'message': 'Expense added successfully'};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return {'status': false, 'message': e.toString()};
+    }
   }
 }
