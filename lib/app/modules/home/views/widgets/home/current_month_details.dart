@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../routes/app_pages.dart';
-import '../../../../services/account_services.dart';
+import '../../../../../routes/app_pages.dart';
+import '../../../../../services/account_services.dart';
 import 'account_details.dart';
 
 class CurrentMonthDetails extends StatelessWidget {

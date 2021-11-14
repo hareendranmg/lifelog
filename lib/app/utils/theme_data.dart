@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-final themeData = ThemeData(primarySwatch: Colors.teal);
+const primaryColor = Colors.teal;
+
+final themeData = ThemeData(primarySwatch: primaryColor);
 
 const Color bodyBackgroundColor = Colors.white;
 const Color textColor = Color(0xFF121212);

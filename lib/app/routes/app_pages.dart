@@ -5,6 +5,9 @@ import '../modules/accounts/views/accounts_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/add_expense_view.dart';
 import '../modules/home/views/add_income_view.dart';
+import '../modules/home/views/edit_accounts_view.dart';
+import '../modules/home/views/edit_expense_cat_view.dart';
+import '../modules/home/views/edit_income_cat_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
@@ -57,6 +60,21 @@ class AppPages {
     GetPage(
       name: _Paths.ADD_EXPENSE,
       page: () => AddExpenseView(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_ACCOUNTS,
+      page: () => EditAccountsView(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_INCOME_CAT,
+      page: () => EditIncomeCatView(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_EXPENSE_CAT,
+      page: () => EditExpenseCatView(),
       binding: HomeBinding(),
     ),
     GetPage(

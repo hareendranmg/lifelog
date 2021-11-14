@@ -4,13 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 
+import '../../../data/account.dart';
+import '../../../data/expense_category.dart';
+import '../../../data/income_category.dart';
 import '../../../services/user_services.dart';
 
 class HomeBaseController extends GetxController {
   final appUser = Get.find<UserService>().appUser!;
   final pageController = PageController();
+  final addAccountFormKey = GlobalKey<FormBuilderState>();
+  final editAccountFormKey = GlobalKey<FormBuilderState>();
+
   final addIncomeFormKey = GlobalKey<FormBuilderState>();
+  final editIncomeFormKey = GlobalKey<FormBuilderState>();
+
   final addExpenseFormKey = GlobalKey<FormBuilderState>();
+  final editExpenseFormKey = GlobalKey<FormBuilderState>();
+
+  Account? _selectedAccount;
+  IncomeCategory? _selectedIncCat;
+  ExpenseCategory? _selectedExpCat;
 
   bool _isDataUploading = false;
   File? _file;
@@ -22,4 +35,12 @@ class HomeBaseController extends GetxController {
   set file(final File? file) => {_file = file, update()};
   String? get fileName => _fileName;
   set fileName(final String? fileName) => {_fileName = fileName, update()};
+  Account? get selectedAccount => _selectedAccount;
+  set selectedAccount(final Account? v) => {_selectedAccount = v, update()};
+  IncomeCategory? get selectedIncCat => _selectedIncCat;
+  set selectedIncCat(final IncomeCategory? v) =>
+      {_selectedIncCat = v, update()};
+  ExpenseCategory? get selectedExpCat => _selectedExpCat;
+  set selectedExpCat(final ExpenseCategory? v) =>
+      {_selectedExpCat = v, update()};
 }

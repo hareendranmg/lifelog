@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -8,6 +9,7 @@ import '../routes/app_pages.dart';
 import '../services/account_services.dart';
 import '../services/user_services.dart';
 import 'constants.dart';
+import 'theme_data.dart';
 
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +37,23 @@ String getGreeting() {
   } else {
     return 'Good Evening';
   }
+}
+
+void showCustomLoadingIndicator() {
+  showDialog(
+    context: Get.context!,
+    builder: (context) => Center(
+      child: Container(
+        height: 80,
+        width: 80,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+        ),
+        child: const SpinKitPulse(color: primaryColor),
+      ),
+    ),
+  );
 }
 
 void routingCallback(Routing routing) {

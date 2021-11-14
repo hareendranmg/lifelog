@@ -18,6 +18,104 @@ class HomeController extends HomeBaseController {
     });
   }
 
+  Future<void> addAccount() async {
+    try {
+      if (addAccountFormKey.currentState?.saveAndValidate() ?? false) {
+        isDataUploading = true;
+        final res = await Get.find<AccountService>().addAccount(
+          accountName: addAccountFormKey.currentState!.value['name'] as String,
+          initialAmount: double.parse(
+            addAccountFormKey.currentState!.value['amount'] as String,
+          ),
+          remarks:
+              addAccountFormKey.currentState?.value['remarks'] as String? ?? '',
+        );
+        isDataUploading = false;
+
+        if (res['status'] as bool) {
+          update();
+          Get.back();
+          showSnackBar(
+            type: SnackbarType.success,
+            message: 'Successfully added new account.',
+          );
+        } else {
+          showSnackBar(
+            type: SnackbarType.error,
+            message: res['message'] as String,
+          );
+        }
+      }
+    } catch (e) {
+      isDataUploading = false;
+      showSnackBar(type: SnackbarType.error, message: e.toString());
+    }
+  }
+
+  Future<void> editAccount(final int id) async {
+    try {
+      if (editAccountFormKey.currentState?.saveAndValidate() ?? false) {
+        isDataUploading = true;
+        final res = await Get.find<AccountService>().editAccount(
+          id: id,
+          accountName: editAccountFormKey.currentState!.value['name'] as String,
+          initialAmount: double.parse(
+            editAccountFormKey.currentState!.value['amount'] as String,
+          ),
+          remarks:
+              editAccountFormKey.currentState?.value['remarks'] as String? ??
+                  '',
+        );
+        isDataUploading = false;
+
+        if (res['status'] as bool) {
+          update();
+          Get.back();
+          showSnackBar(
+            type: SnackbarType.success,
+            message: 'Successfully edited the account.',
+          );
+        } else {
+          showSnackBar(
+            type: SnackbarType.error,
+            message: res['message'] as String,
+          );
+        }
+      }
+    } catch (e) {
+      isDataUploading = false;
+      showSnackBar(type: SnackbarType.error, message: e.toString());
+    }
+  }
+
+  Future<void> deleteAccount(final int id) async {
+    try {
+      showCustomLoadingIndicator();
+
+      final res = await Get.find<AccountService>().deleteAccount(id: id);
+
+      Get.back();
+      if (res['status'] as bool) {
+        update();
+        Get.back();
+        Get.back();
+        showSnackBar(
+          type: SnackbarType.success,
+          message: 'Successfully deleted the account.',
+        );
+      } else {
+        showSnackBar(
+          type: SnackbarType.error,
+          message: res['message'] as String,
+        );
+      }
+    } catch (e) {
+      Get.back();
+      isDataUploading = false;
+      showSnackBar(type: SnackbarType.error, message: e.toString());
+    }
+  }
+
   void removeFile() {
     showDialog(
       context: Get.context!,

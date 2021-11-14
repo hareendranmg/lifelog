@@ -11,6 +11,7 @@ import '../data/expense_category.dart';
 import '../data/income.dart';
 import '../data/income_category.dart';
 import '../utils/constants.dart';
+import 'user_services.dart';
 
 class AccountService extends GetxService {
   final box = GetStorage();
@@ -75,8 +76,9 @@ class AccountService extends GetxService {
       currentMonthIncome = currentIncomeList.fold(0, (a, b) => a + b.amount);
       currentMonthExpense = currentExpenseList.fold(0, (a, b) => a + b.amount);
       currentMonthBalance = currentMonthIncome - currentMonthExpense;
-      currentMonthRemainingPercent =
-          ((currentMonthBalance / currentMonthIncome) * 100).toPrecision(2);
+      currentMonthRemainingPercent = currentMonthIncome == 0
+          ? 0
+          : ((currentMonthBalance / currentMonthIncome) * 100).toPrecision(2);
     } catch (e) {
       currentMonthIncome = 0;
       currentMonthExpense = 0;
@@ -106,8 +108,9 @@ class AccountService extends GetxService {
       totalIncome = totalIncomeList.fold(0, (a, b) => a + b.amount);
       totalExpense = totalExpenseList.fold(0, (a, b) => a + b.amount);
       totalBalance = totalIncome - totalExpense;
-      totalRemainingPercent =
-          ((totalBalance / totalIncome) * 100).toPrecision(2);
+      totalRemainingPercent = totalIncome == 0
+          ? 0
+          : ((totalBalance / totalIncome) * 100).toPrecision(2);
     } catch (e) {
       totalIncome = 0;
       totalExpense = 0;
@@ -130,6 +133,78 @@ class AccountService extends GetxService {
     } catch (e) {
       debugPrint(e.toString());
       return accounts;
+    }
+  }
+
+  Future<Map<String, dynamic>> addAccount({
+    required final String accountName,
+    required final double initialAmount,
+    required final String remarks,
+  }) async {
+    try {
+      final formData = {
+        'user_id': Get.find<UserService>().appUser!.id,
+        'name': accountName,
+        'amount': initialAmount,
+        'remarks': remarks,
+      };
+
+      final response =
+          await supabase.from('accounts').insert(formData).execute();
+      if (response.error == null) {
+        await getAccounts();
+        return {'status': true};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      return {'status': false, 'message': e.toString()};
+    }
+  }
+
+  Future<Map<String, dynamic>> editAccount({
+    required final int id,
+    required final String accountName,
+    required final double initialAmount,
+    required final String remarks,
+  }) async {
+    try {
+      final formData = {
+        'name': accountName,
+        'amount': initialAmount,
+        'remarks': remarks,
+      };
+
+      final response = await supabase
+          .from('accounts')
+          .update(formData)
+          .eq('id', id)
+          .execute();
+      if (response.error == null) {
+        await getAccounts();
+        return {'status': true};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      return {'status': false, 'message': e.toString()};
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteAccount({
+    required final int id,
+  }) async {
+    try {
+      final response =
+          await supabase.from('accounts').delete().eq('id', id).execute();
+      if (response.error == null) {
+        await getAccounts();
+        return {'status': true};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      return {'status': false, 'message': e.toString()};
     }
   }
 

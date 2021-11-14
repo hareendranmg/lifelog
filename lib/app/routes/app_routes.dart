@@ -8,6 +8,9 @@ abstract class Routes {
   static const ADD_INCOME = _Paths.ADD_INCOME;
   static const ADD_EXPENSE = _Paths.ADD_EXPENSE;
   static const LOGIN = _Paths.LOGIN;
+  static const EDIT_ACCOUNTS = _Paths.EDIT_ACCOUNTS;
+  static const EDIT_INCOME_CAT = _Paths.EDIT_INCOME_CAT;
+  static const EDIT_EXPENSE_CAT = _Paths.EDIT_EXPENSE_CAT;
   static const ROOT = _Paths.ROOT;
   static const REGISTER = _Paths.REGISTER;
   static const PROFILE = _Paths.PROFILE;
@@ -21,6 +24,9 @@ abstract class _Paths {
   static const HOME = '/home';
   static const ADD_INCOME = '/add-income';
   static const ADD_EXPENSE = '/add-expense';
+  static const EDIT_ACCOUNTS = '/edit-accounts';
+  static const EDIT_INCOME_CAT = '/edit-income-cat';
+  static const EDIT_EXPENSE_CAT = '/edit-expense-cat';
   static const LOGIN = '/login';
   static const ROOT = '/root';
   static const REGISTER = '/register';

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 
+import '../../../global_widgets/custom_bottom_sheet.dart';
 import '../../../global_widgets/custom_scaffold.dart';
 import '../../../services/account_services.dart';
 import '../controllers/home_controller.dart';
+import 'widgets/account/accounts_bottom_sheet.dart';
 
 class AddIncomeView extends GetView<HomeController> {
   @override
@@ -29,17 +31,11 @@ class AddIncomeView extends GetView<HomeController> {
               style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 12),
-            FormBuilderDropdown(
+            FormBuilderTextField(
+              onTap: () =>
+                  showCustomBottomSheet(context, const AccountsBottomSheet()),
               name: 'account',
-              items: Get.find<AccountService>()
-                  .accounts
-                  .map(
-                    (final account) => DropdownMenuItem(
-                      value: account.id,
-                      child: Text(account.name),
-                    ),
-                  )
-                  .toList(),
+              keyboardType: TextInputType.none,
               decoration: const InputDecoration(
                 labelText: 'Account',
                 border: OutlineInputBorder(),

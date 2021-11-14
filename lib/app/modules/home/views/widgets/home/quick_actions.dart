@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../routes/app_pages.dart';
+import '../../../../../routes/app_pages.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({
@@ -14,7 +14,7 @@ class QuickActions extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton.icon(
-          onPressed: () => Get.toNamed(Routes.ACCOUNTS),
+          onPressed: () => Get.toNamed(Routes.EDIT_ACCOUNTS),
           icon: const Icon(Icons.account_balance_sharp),
           label: const Text('Accounts'),
         ),
