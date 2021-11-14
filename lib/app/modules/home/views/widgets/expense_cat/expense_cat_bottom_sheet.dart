@@ -2,20 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 
-import '../../../../../data/account.dart';
+import '../../../../../data/expense_category.dart';
 import '../../../../../global_widgets/custom_bottom_sheet.dart';
 import '../../../../../routes/app_pages.dart';
 import '../../../../../services/account_services.dart';
 import '../../../controllers/home_controller.dart';
-import 'add_account_bottom_sheet.dart';
+import 'add_expense_cat_bottom_sheet.dart';
 
-class AccountsBottomSheet extends StatelessWidget {
-  const AccountsBottomSheet({
+class ExpenseCatBottomSheet extends StatelessWidget {
+  const ExpenseCatBottomSheet({
     Key? key,
-    this.isIncome = true,
   }) : super(key: key);
-
-  final bool isIncome;
 
   @override
   Widget build(BuildContext context) {
@@ -26,52 +23,52 @@ class AccountsBottomSheet extends StatelessWidget {
           Row(
             children: [
               const Text(
-                'Accounts',
+                'Expense Category',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 20),
               ),
               const Spacer(),
               IconButton(
-                onPressed: () => Get.toNamed(Routes.EDIT_ACCOUNTS),
+                onPressed: () => Get.toNamed(Routes.EDIT_EXPENSE_CAT),
                 icon: const Icon(Icons.edit),
               ),
               IconButton(
                 onPressed: () => showCustomBottomSheet(
                   context,
-                  const AddAccountBottomSheet(),
+                  const AddExpenseCatBottomSheet(),
                 ),
                 icon: const Icon(Icons.add),
               ),
             ],
           ),
           GetBuilder<HomeController>(
-            builder: (_) => Get.find<AccountService>().accounts.isNotEmpty
-                ? FormBuilderChoiceChip<Account>(
+            builder: (_) => Get.find<AccountService>()
+                    .expenseCategories
+                    .isNotEmpty
+                ? FormBuilderChoiceChip<ExpenseCategory>(
                     name: 'choice_chip',
                     spacing: 12,
                     options: Get.find<AccountService>()
-                        .accounts
+                        .expenseCategories
                         .map(
                           (final e) => FormBuilderFieldOption(
                             value: e,
-                            child: Text('${e.name} (Bal. ${e.amount})'),
+                            child: Text(e.name),
                           ),
                         )
                         .toList(),
                     decoration: const InputDecoration(border: InputBorder.none),
-                    initialValue: _.selectedAccount,
+                    initialValue: _.selectedExpCat,
                     onChanged: (final value) {
-                      _.selectedAccount = value;
-                      isIncome
-                          ? _.addIncomeFormKey.currentState?.fields['account']
-                              ?.didChange(value?.name)
-                          : _.addExpenseFormKey.currentState?.fields['account']
-                              ?.didChange(value?.name);
+                      _.selectedExpCat = value;
+                      _.addExpenseFormKey.currentState
+                          ?.fields['expense_category']
+                          ?.didChange(value?.name);
                     },
                   )
                 : const Center(
                     child: Text(
-                      'You are not added any accounts yet. \nAdd a new one by clicking the + button.',
+                      'You are not added any expense categories yet. \nAdd a new one by clicking the + button.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 15.5,

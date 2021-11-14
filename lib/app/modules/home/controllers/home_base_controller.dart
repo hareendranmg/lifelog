@@ -12,14 +12,18 @@ import '../../../services/user_services.dart';
 class HomeBaseController extends GetxController {
   final appUser = Get.find<UserService>().appUser!;
   final pageController = PageController();
+
+  final addIncomeFormKey = GlobalKey<FormBuilderState>();
+  final addExpenseFormKey = GlobalKey<FormBuilderState>();
+
   final addAccountFormKey = GlobalKey<FormBuilderState>();
   final editAccountFormKey = GlobalKey<FormBuilderState>();
 
-  final addIncomeFormKey = GlobalKey<FormBuilderState>();
-  final editIncomeFormKey = GlobalKey<FormBuilderState>();
+  final addIncomeCatFormKey = GlobalKey<FormBuilderState>();
+  final editIncomeCatFormKey = GlobalKey<FormBuilderState>();
 
-  final addExpenseFormKey = GlobalKey<FormBuilderState>();
-  final editExpenseFormKey = GlobalKey<FormBuilderState>();
+  final addExpenseCatFormKey = GlobalKey<FormBuilderState>();
+  final editExpenseCatFormKey = GlobalKey<FormBuilderState>();
 
   Account? _selectedAccount;
   IncomeCategory? _selectedIncCat;

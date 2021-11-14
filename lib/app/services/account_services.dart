@@ -208,6 +208,148 @@ class AccountService extends GetxService {
     }
   }
 
+  Future<Map<String, dynamic>> addIncomeCat({
+    required final String categoryName,
+    required final String remarks,
+  }) async {
+    try {
+      final formData = {
+        'user_id': Get.find<UserService>().appUser!.id,
+        'name': categoryName,
+        'remarks': remarks,
+      };
+
+      final response =
+          await supabase.from('income_categories').insert(formData).execute();
+      if (response.error == null) {
+        await getIncomeCategories();
+        return {'status': true};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      return {'status': false, 'message': e.toString()};
+    }
+  }
+
+  Future<Map<String, dynamic>> editIncomeCat({
+    required final int id,
+    required final String categoryName,
+    required final String remarks,
+  }) async {
+    try {
+      final formData = {
+        'name': categoryName,
+        'remarks': remarks,
+      };
+
+      final response = await supabase
+          .from('income_categories')
+          .update(formData)
+          .eq('id', id)
+          .execute();
+      if (response.error == null) {
+        await getIncomeCategories();
+        return {'status': true};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      return {'status': false, 'message': e.toString()};
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteIncomeCat({
+    required final int id,
+  }) async {
+    try {
+      final response = await supabase
+          .from('income_categories')
+          .delete()
+          .eq('id', id)
+          .execute();
+      if (response.error == null) {
+        await getIncomeCategories();
+        return {'status': true};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      return {'status': false, 'message': e.toString()};
+    }
+  }
+
+  Future<Map<String, dynamic>> addExpenseCat({
+    required final String categoryName,
+    required final String remarks,
+  }) async {
+    try {
+      final formData = {
+        'user_id': Get.find<UserService>().appUser!.id,
+        'name': categoryName,
+        'remarks': remarks,
+      };
+
+      final response =
+          await supabase.from('expense_categories').insert(formData).execute();
+      if (response.error == null) {
+        await getExpenseCategories();
+        return {'status': true};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      return {'status': false, 'message': e.toString()};
+    }
+  }
+
+  Future<Map<String, dynamic>> editExpenseCat({
+    required final int id,
+    required final String categoryName,
+    required final String remarks,
+  }) async {
+    try {
+      final formData = {
+        'name': categoryName,
+        'remarks': remarks,
+      };
+
+      final response = await supabase
+          .from('expense_categories')
+          .update(formData)
+          .eq('id', id)
+          .execute();
+      if (response.error == null) {
+        await getExpenseCategories();
+        return {'status': true};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      return {'status': false, 'message': e.toString()};
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteExpenseCat({
+    required final int id,
+  }) async {
+    try {
+      final response = await supabase
+          .from('expense_categories')
+          .delete()
+          .eq('id', id)
+          .execute();
+      if (response.error == null) {
+        await getExpenseCategories();
+        return {'status': true};
+      } else {
+        return {'status': false, 'message': response.error.toString()};
+      }
+    } catch (e) {
+      return {'status': false, 'message': e.toString()};
+    }
+  }
+
   Future<List<IncomeCategory>> getIncomeCategories() async {
     try {
       final incomeCategoriesList = await supabase
@@ -352,6 +494,8 @@ class AccountService extends GetxService {
               .eq('id', incomeId)
               .execute();
         }
+        getCurrentMonthAccountDet();
+        getTotalAccountDet();
         return {'status': true, 'message': 'Income added successfully'};
       } else {
         return {'status': false, 'message': response.error.toString()};
@@ -386,6 +530,8 @@ class AccountService extends GetxService {
               .eq('id', expenseId)
               .execute();
         }
+        getCurrentMonthAccountDet();
+        getTotalAccountDet();
         return {'status': true, 'message': 'Expense added successfully'};
       } else {
         return {'status': false, 'message': response.error.toString()};

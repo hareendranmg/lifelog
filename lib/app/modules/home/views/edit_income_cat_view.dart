@@ -1,15 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../global_widgets/custom_bottom_sheet.dart';
 import '../../../global_widgets/custom_scaffold.dart';
+import '../../../services/account_services.dart';
 import '../controllers/home_controller.dart';
+import 'widgets/income_cat/add_income_cat_bottom_sheet.dart';
+import 'widgets/income_cat/edit_income_cat_bottom_sheet.dart';
 
 class EditIncomeCatView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: const CustomAppbar(title: 'Edit Income Categories'),
-      body: Container(),
+      appBar: CustomAppbar(
+        title: 'Edit Income Categories',
+        actions: [
+          IconButton(
+            onPressed: () => showCustomBottomSheet(
+              context,
+              const AddIncomeCatBottomSheet(),
+            ),
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
+      body: Get.find<AccountService>().incomeCategories.isNotEmpty
+          ? GetBuilder<HomeController>(
+              builder: (_) {
+                return ListView.separated(
+                  itemCount: Get.find<AccountService>().incomeCategories.length,
+                  itemBuilder: (final c, final i) => Container(
+                    height: 60,
+                    width: Get.width,
+                    margin: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.lightBlue[50],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            Get.find<AccountService>().incomeCategories[i].name,
+                            style: const TextStyle(fontSize: 17),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () => showCustomBottomSheet(
+                                context,
+                                EditIncomeCatBottomSheet(
+                                  incomeCategory: Get.find<AccountService>()
+                                      .incomeCategories[i],
+                                ),
+                              ),
+                              icon: const Icon(Icons.remove_red_eye),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  separatorBuilder: (final c, final i) =>
+                      const SizedBox(height: 10),
+                );
+              },
+            )
+          : const Center(
+              child: Text(
+                'You are not added any income categories yet. \nAdd a new one by clicking the + button.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15.5,
+                ),
+              ),
+            ),
     );
   }
 }

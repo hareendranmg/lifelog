@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 
 import '../../../global_widgets/custom_bottom_sheet.dart';
 import '../../../global_widgets/custom_scaffold.dart';
-import '../../../services/account_services.dart';
 import '../controllers/home_controller.dart';
 import 'widgets/account/accounts_bottom_sheet.dart';
+import 'widgets/income_cat/income_cat_bottom_sheet.dart';
 
 class AddIncomeView extends GetView<HomeController> {
   @override
@@ -36,6 +36,7 @@ class AddIncomeView extends GetView<HomeController> {
                   showCustomBottomSheet(context, const AccountsBottomSheet()),
               name: 'account',
               keyboardType: TextInputType.none,
+              readOnly: true,
               decoration: const InputDecoration(
                 labelText: 'Account',
                 border: OutlineInputBorder(),
@@ -45,17 +46,12 @@ class AddIncomeView extends GetView<HomeController> {
               ),
             ),
             const SizedBox(height: 12),
-            FormBuilderDropdown(
+            FormBuilderTextField(
+              onTap: () =>
+                  showCustomBottomSheet(context, const IncomeCatBottomSheet()),
               name: 'income_category',
-              items: Get.find<AccountService>()
-                  .incomeCategories
-                  .map(
-                    (final incomeCat) => DropdownMenuItem(
-                      value: incomeCat.id,
-                      child: Text(incomeCat.name),
-                    ),
-                  )
-                  .toList(),
+              keyboardType: TextInputType.none,
+              readOnly: true,
               decoration: const InputDecoration(
                 labelText: 'Income Category',
                 border: OutlineInputBorder(),
