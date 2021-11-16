@@ -363,7 +363,7 @@ class HomeController extends HomeBaseController {
           'account': selectedAccount!.id,
           'income_category': selectedIncCat!.id,
           'amount': addIncomeFormKey.currentState?.value['amount'],
-          'remarks': addIncomeFormKey.currentState?.value['remarks'],
+          'remarks': addIncomeFormKey.currentState?.value['remarks'] ?? '',
           'date': (addIncomeFormKey.currentState?.value['date'] as DateTime)
               .toIso8601String(),
         };
@@ -420,7 +420,7 @@ class HomeController extends HomeBaseController {
           'account': selectedAccount!.id,
           'expense_category': selectedExpCat!.id,
           'amount': addExpenseFormKey.currentState?.value['amount'],
-          'remarks': addExpenseFormKey.currentState?.value['remarks'],
+          'remarks': addExpenseFormKey.currentState?.value['remarks'] ?? '',
           'date': (addExpenseFormKey.currentState?.value['date'] as DateTime)
               .toIso8601String(),
         };

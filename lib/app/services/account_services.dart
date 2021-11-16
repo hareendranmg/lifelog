@@ -80,6 +80,7 @@ class AccountService extends GetxService {
           ? 0
           : ((currentMonthBalance / currentMonthIncome) * 100).toPrecision(2);
     } catch (e) {
+      //print('getCurrentMonthAccountDet');
       currentMonthIncome = 0;
       currentMonthExpense = 0;
       currentMonthBalance = 0;
@@ -112,6 +113,7 @@ class AccountService extends GetxService {
           ? 0
           : ((totalBalance / totalIncome) * 100).toPrecision(2);
     } catch (e) {
+      //print('getTotalAccountDet');
       totalIncome = 0;
       totalExpense = 0;
       totalBalance = 0;
@@ -131,6 +133,7 @@ class AccountService extends GetxService {
             ),
           );
     } catch (e) {
+      //print('getAccounts');
       debugPrint(e.toString());
       return accounts;
     }
@@ -158,6 +161,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('addAccount');
       return {'status': false, 'message': e.toString()};
     }
   }
@@ -187,6 +191,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('editAccount');
       return {'status': false, 'message': e.toString()};
     }
   }
@@ -204,6 +209,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('deleteAccount');
       return {'status': false, 'message': e.toString()};
     }
   }
@@ -228,6 +234,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('addIncomeCat');
       return {'status': false, 'message': e.toString()};
     }
   }
@@ -255,6 +262,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('editIncomeCat');
       return {'status': false, 'message': e.toString()};
     }
   }
@@ -275,6 +283,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('deleteIncomeCat');
       return {'status': false, 'message': e.toString()};
     }
   }
@@ -299,6 +308,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('addExpenseCat');
       return {'status': false, 'message': e.toString()};
     }
   }
@@ -326,6 +336,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('editExpenseCat');
       return {'status': false, 'message': e.toString()};
     }
   }
@@ -346,6 +357,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('deleteExpenseCat');
       return {'status': false, 'message': e.toString()};
     }
   }
@@ -364,6 +376,7 @@ class AccountService extends GetxService {
             .toList(),
       );
     } catch (e) {
+      //print('getIncomeCategories');
       debugPrint(e.toString());
       return incomeCategories;
     }
@@ -383,6 +396,7 @@ class AccountService extends GetxService {
             .toList(),
       );
     } catch (e) {
+      //print('getExpenseCategories');
       debugPrint(e.toString());
       return expenseCategories;
     }
@@ -425,6 +439,7 @@ class AccountService extends GetxService {
         return incomeList;
       }
     } catch (e) {
+      //print('getIncomeCategoryWiseAmount');
       debugPrint(e.toString());
       return [];
     }
@@ -466,6 +481,7 @@ class AccountService extends GetxService {
             );
       }
     } catch (e) {
+      //print('getExpenseCategoryWiseAmount');
       debugPrint(e.toString());
       return [];
     }
@@ -501,6 +517,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('addIncome');
       debugPrint(e.toString());
       return {'status': false, 'message': e.toString()};
     }
@@ -537,6 +554,7 @@ class AccountService extends GetxService {
         return {'status': false, 'message': response.error.toString()};
       }
     } catch (e) {
+      //print('addExpense');
       debugPrint(e.toString());
       return {'status': false, 'message': e.toString()};
     }

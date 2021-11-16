@@ -6,7 +6,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../modules/home/controllers/home_controller.dart';
 import '../routes/app_pages.dart';
-import '../services/account_services.dart';
 import '../services/user_services.dart';
 import 'constants.dart';
 import 'theme_data.dart';
@@ -17,7 +16,6 @@ Future<void> initServices() async {
   await GetStorage.init();
   await Supabase.initialize(url: SUPABASE_URL, anonKey: SUPABASE_ANON_KEY);
   await Get.putAsync(() async => UserService().init());
-  await Get.putAsync(() async => AccountService().init());
 }
 
 void removeCurrentFocus(BuildContext context) {

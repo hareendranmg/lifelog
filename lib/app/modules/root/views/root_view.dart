@@ -14,9 +14,24 @@ class RootView extends GetView<RootController> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: GetBuilder<RootController>(
-        builder: (_) => const Scaffold(
+        builder: (_) => Scaffold(
           body: Center(
-            child: CircularProgressIndicator(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: const [
+                Text(
+                  'LifeLog',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: 3,
+                  ),
+                ),
+                SizedBox(height: 180),
+                CircularProgressIndicator(strokeWidth: 3),
+                SizedBox(height: 40),
+              ],
+            ),
           ),
         ),
       ),
